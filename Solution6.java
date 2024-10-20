@@ -1,7 +1,7 @@
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @description:
@@ -42,42 +42,38 @@ import java.util.Set;
  *
  */
 class Solution6 {
-    Set<String>[] s = new Set[105];
-
     public List<Integer> peopleIndexes(List<List<String>> favoriteCompanies) {
-        for (int i = 1; i < 105; ++i) {
-            s[i] = new HashSet<String>();
-        }
-        int n = favoriteCompanies.size()-1;
-        List<Integer> ans = new ArrayList<Integer>();
+        int n = favoriteCompanies.size();
+        Set<String>[] s = new HashSet[n];
+
+        List<Integer> ans = new ArrayList<Integer>();//最后给出的数组[0,1,2]
 
         for (int i = 0; i < n; ++i) {
+            s[i] = new HashSet<String>();
             for (String com : favoriteCompanies.get(i)) {
                 s[i].add(com);
             }
-
-            for (int i = 0; i < n; ++i) {
-                boolean isSub = false;
-                for (int j = 0; j < n; ++j) {
-                    if (i == j) {
-                        continue;
-                    }
-                    isSub |= check(favoriteCompanies, i, j);
+        }//给数组初始化并赋值
+        for (int i = 0; i < n; ++i) {
+            boolean isSub = true;
+            for (int j = 0; j < n; ++j) {
+                if (i == j) {
+                    continue;
                 }
-                if (isSub) {
-                    ans.add(i);
-                }
+                isSub = check(s, i, j);
+                if (!isSub) break;
+            }//条件判断
+            if (isSub) {
+                ans.add(i);
             }
-
-            return ans;
         }
 
-        public boolean check(List<List<String>> favoriteCompanies, int x, int y) {
-            for (String com : favoriteCompanies.get(x)) {
-                if (!s[y].contains(com)) {
-                    return false;
-                }
-            }
-            return true;
-        }
+        return ans;
     }
+
+    public boolean check(Set<String>[] s, int x, int y) {
+        return !s[y].containsAll(s[x]);
+    }
+}
+
+
