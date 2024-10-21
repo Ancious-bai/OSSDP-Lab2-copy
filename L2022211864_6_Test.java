@@ -7,7 +7,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
+//很全面，很有思路奥
 class L2022211864_6_Test {
 
     private Solution6 solution;
